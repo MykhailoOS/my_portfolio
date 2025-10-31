@@ -4,6 +4,18 @@ require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/utils.php';
 require_once __DIR__ . '/../lib/export.php';
 
+// Set CORS headers first to ensure they're always sent
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, X-CSRF-Token, Authorization');
+header('Access-Control-Max-Age: 3600');
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
 header('Content-Type: application/json');
 
 $method = $_SERVER['REQUEST_METHOD'];

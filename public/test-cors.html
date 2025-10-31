@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test - Portfolio Builder</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.pass {
+            background: #28a745;
+            color: white;
+        }
+        .status.fail {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 CORS Configuration Test</h1>
+        <p>This page tests if CORS headers are properly configured for the Portfolio Builder API.</p>
+        
+        <div class="test-section">
+            <h3>Test 1: API CORS Headers <span id="test1-status" class="status"></span></h3>
+            <p>Tests if the API endpoint returns proper CORS headers.</p>
+            <button onclick="testApiCors()">Run Test 1</button>
+            <div id="test1-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 2: CORS Test Endpoint <span id="test2-status" class="status"></span></h3>
+            <p>Tests the dedicated CORS test endpoint.</p>
+            <button onclick="testCorsEndpoint()">Run Test 2</button>
+            <div id="test2-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 3: Preflight Request <span id="test3-status" class="status"></span></h3>
+            <p>Tests if OPTIONS preflight requests are handled correctly.</p>
+            <button onclick="testPreflight()">Run Test 3</button>
+            <div id="test3-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <button onclick="runAllTests()" style="background: #28a745;">Run All Tests</button>
+            <button onclick="clearResults()" style="background: #6c757d;">Clear Results</button>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        function showResult(testId, message, type) {
+            const resultDiv = document.getElementById(`test${testId}-result`);
+            const statusSpan = document.getElementById(`test${testId}-status`);
+            
+            resultDiv.innerHTML = `<div class="result ${type}">${message}</div>`;
+            
+            if (type === 'success') {
+                statusSpan.textContent = 'PASS';
+                statusSpan.className = 'status pass';
+            } else if (type === 'error') {
+                statusSpan.textContent = 'FAIL';
+                statusSpan.className = 'status fail';
+            } else {
+                statusSpan.textContent = '';
+                statusSpan.className = 'status';
+            }
+        }
+        
+        function testApiCors() {
+            showResult(1, 'Testing...', 'info');
+            
+            $.ajax({
+                url: '/test-cors.php',
+                type: 'GET',
+                crossDomain: false,
+                success: function(response) {
+                    const message = `✓ API CORS Test Passed!\n\n${JSON.stringify(response, null, 2)}`;
+                    showResult(1, message, 'success');
+                },
+                error: function(xhr, status, error) {
+                    const message = `✗ API CORS Test Failed\n\nStatus: ${status}\nError: ${error}\nResponse: ${xhr.responseText || 'No response'}`;
+                    showResult(1, message, 'error');
+                }
+            });
+        }
+        
+        function testCorsEndpoint() {
+            showResult(2, 'Testing...', 'info');
+            
+            fetch('/test-cors.php')
+                .then(response => {
+                    const corsHeaders = {
+                        'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                        'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                        'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                    };
+                    
+                    return response.json().then(data => ({
+                        data: data,
+                        headers: corsHeaders,
+                        status: response.status
+                    }));
+                })
+                .then(result => {
+                    const message = `✓ CORS Endpoint Test Passed!\n\nStatus: ${result.status}\n\nCORS Headers:\n${JSON.stringify(result.headers, null, 2)}\n\nResponse:\n${JSON.stringify(result.data, null, 2)}`;
+                    showResult(2, message, 'success');
+                })
+                .catch(error => {
+                    const message = `✗ CORS Endpoint Test Failed\n\nError: ${error.message}`;
+                    showResult(2, message, 'error');
+                });
+        }
+        
+        function testPreflight() {
+            showResult(3, 'Testing...', 'info');
+            
+            fetch('/test-cors.php', {
+                method: 'OPTIONS',
+                headers: {
+                    'Access-Control-Request-Method': 'POST',
+                    'Access-Control-Request-Headers': 'Content-Type'
+                }
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    const corsHeaders = {
+                        'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                        'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                        'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers'),
+                        'Access-Control-Max-Age': response.headers.get('Access-Control-Max-Age')
+                    };
+                    
+                    const message = `✓ Preflight Test Passed!\n\nStatus: ${response.status}\n\nCORS Headers:\n${JSON.stringify(corsHeaders, null, 2)}`;
+                    showResult(3, message, 'success');
+                } else {
+                    const message = `✗ Preflight Test Failed\n\nUnexpected status: ${response.status}`;
+                    showResult(3, message, 'error');
+                }
+            })
+            .catch(error => {
+                const message = `✗ Preflight Test Failed\n\nError: ${error.message}`;
+                showResult(3, message, 'error');
+            });
+        }
+        
+        function runAllTests() {
+            testApiCors();
+            setTimeout(() => testCorsEndpoint(), 500);
+            setTimeout(() => testPreflight(), 1000);
+        }
+        
+        function clearResults() {
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`test${i}-result`).innerHTML = '';
+                document.getElementById(`test${i}-status`).textContent = '';
+                document.getElementById(`test${i}-status`).className = 'status';
+            }
+        }
+    </script>
+</body>
+</html>
