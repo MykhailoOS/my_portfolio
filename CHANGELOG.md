@@ -43,6 +43,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Efficient JSON storage for flexible content
 - Optimized CSS with mobile-first approach
 
+## [1.1.0] - 2024
+
+### Fixed
+- **CORS Issues on Free Hosting Providers**: Added comprehensive CORS header support for InfinityFree and similar hosting providers
+  - Added CORS headers to `.htaccess` via mod_headers
+  - Added CORS headers at the start of `api.php` before any output
+  - Updated `jsonResponse()` function to always include CORS headers
+  - Added OPTIONS preflight request handling
+  - Improved error handling in JavaScript AJAX calls
+  - Added detailed console logging for debugging
+
+### Added
+- **CORS Test Utilities**: 
+  - `/test-cors.php` - API endpoint to verify CORS headers
+  - `/test-cors.html` - Interactive test page for CORS validation
+  - `CORS_FIX.md` - Comprehensive guide for CORS configuration
+- **Better Error Handling**: Enhanced AJAX error handlers with detailed logging
+- **Documentation**: Added troubleshooting section for CORS issues in README
+
+### Changed
+- Updated all AJAX calls to explicitly set `crossDomain: false`
+- Replaced `$.getJSON()` with `$.ajax()` for better error handling
+- Enhanced error messages in JavaScript to be more informative
+
 ## [Unreleased]
 
 ### Planned

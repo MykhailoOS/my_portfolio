@@ -273,6 +273,18 @@ All POST requests require CSRF token.
 
 ## 🐛 Troubleshooting
 
+### CORS Issues (InfinityFree & Similar Hosts)
+
+If you see errors like "CORS header 'Access-Control-Allow-Origin' missing":
+
+1. **Check CORS Test**: Visit `/test-cors.html` on your site to verify CORS headers
+2. **Read CORS Guide**: See [CORS_FIX.md](CORS_FIX.md) for detailed solutions
+3. **Verify .htaccess**: Ensure `public/.htaccess` is uploaded and processed
+
+This project includes comprehensive CORS support for free hosting providers.
+
+### Other Issues
+
 See [README_SETUP.md](README_SETUP.md#troubleshooting) for:
 - Database connection issues
 - Permission problems

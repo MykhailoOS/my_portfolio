@@ -24,17 +24,35 @@
       const lang = localStorage.getItem('editorLang') || 'en';
       this.editorLang = lang;
 
-      $.getJSON(`/i18n/ui.${lang}.json`)
-        .done((data) => {
+      $.ajax({
+        url: `/i18n/ui.${lang}.json`,
+        type: 'GET',
+        dataType: 'json',
+        cache: true,
+        crossDomain: false,
+        success: (data) => {
           this.i18n = data;
           this.renderUI();
-        })
-        .fail(() => {
-          $.getJSON('/i18n/ui.en.json').done((data) => {
-            this.i18n = data;
-            this.renderUI();
+        },
+        error: () => {
+          $.ajax({
+            url: '/i18n/ui.en.json',
+            type: 'GET',
+            dataType: 'json',
+            cache: true,
+            crossDomain: false,
+            success: (data) => {
+              this.i18n = data;
+              this.renderUI();
+            },
+            error: (xhr, status, error) => {
+              console.error('Failed to load i18n files:', status, error);
+              this.i18n = {};
+              this.renderUI();
+            }
           });
-        });
+        }
+      });
     },
 
     t: function(key) {
@@ -143,21 +161,33 @@
         data: formData,
         processData: false,
         contentType: false,
+        crossDomain: false,
         success: (response) => {
           localStorage.setItem('currentProjectId', response.id);
           $('#create-project-modal').remove();
           this.loadProject(response.id);
           this.showToast(this.t('saved'));
         },
-        error: () => {
-          this.showToast(this.t('error'), 'danger');
+        error: (xhr, status, error) => {
+          console.error('Project creation error:', status, error, xhr);
+          let errorMsg = this.t('error');
+          if (xhr.responseJSON && xhr.responseJSON.error) {
+            errorMsg = xhr.responseJSON.error;
+          } else if (status === 'error' && !xhr.status) {
+            errorMsg = 'Network error - check if API endpoint is accessible';
+          }
+          this.showToast(errorMsg, 'danger');
         }
       });
     },
 
     loadProject: function(id) {
-      $.get('/api.php', { action: 'project.get', id: id })
-        .done((data) => {
+      $.ajax({
+        url: '/api.php',
+        type: 'GET',
+        data: { action: 'project.get', id: id },
+        crossDomain: false,
+        success: (data) => {
           this.project = data.project;
           this.pages = data.pages;
           this.blocks = data.blocks;
@@ -166,10 +196,20 @@
           
           this.renderProject();
           this.initSortable();
-        })
-        .fail(() => {
-          this.showToast(this.t('error'), 'danger');
-        });
+        },
+        error: (xhr, status, error) => {
+          console.error('Project load error:', status, error, xhr);
+          let errorMsg = this.t('error');
+          if (xhr.responseJSON && xhr.responseJSON.error) {
+            errorMsg = xhr.responseJSON.error;
+          } else if (status === 'error' && !xhr.status) {
+            errorMsg = 'Network error - cannot load project';
+          }
+          this.showToast(errorMsg, 'danger');
+          localStorage.removeItem('currentProjectId');
+          setTimeout(() => this.showCreateProjectModal(), 2000);
+        }
+      });
     },
 
     renderProject: function() {
@@ -481,9 +521,13 @@
           data: JSON.stringify(data),
           csrf_token: this.getCsrfToken()
         },
+        crossDomain: false,
         success: () => {
           this.renderCanvas();
           localStorage.setItem('lastSave', Date.now());
+        },
+        error: (xhr, status, error) => {
+          console.error('Block save error:', status, error, xhr);
         }
       });
     },
@@ -499,6 +543,7 @@
           id: id,
           csrf_token: this.getCsrfToken()
         },
+        crossDomain: false,
         success: () => {
           this.blocks = this.blocks.filter(b => b.id != id);
           this.selectedBlock = null;
@@ -506,6 +551,10 @@
           this.renderCanvas();
           $('.inspector-content').empty();
           this.showToast(this.t('saved'));
+        },
+        error: (xhr, status, error) => {
+          console.error('Block delete error:', status, error, xhr);
+          this.showToast(this.t('error'), 'danger');
         }
       });
     },
@@ -544,6 +593,7 @@
           blocks: JSON.stringify(order),
           csrf_token: this.getCsrfToken()
         },
+        crossDomain: false,
         success: () => {
           this.blocks.sort((a, b) => {
             const aOrder = order.find(o => o.id == a.id);
@@ -551,6 +601,9 @@
             return (aOrder?.order || 0) - (bOrder?.order || 0);
           });
           this.renderCanvas();
+        },
+        error: (xhr, status, error) => {
+          console.error('Block reorder error:', status, error, xhr);
         }
       });
     },
