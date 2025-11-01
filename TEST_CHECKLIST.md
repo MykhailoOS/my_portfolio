@@ -6,11 +6,11 @@ Before deploying to your hosting provider, ensure all files are present:
 
 ```bash
 # Check that core files exist
-ls -l public/.htaccess
-ls -l public/api.php
-ls -l public/index.php
+ls -l .htaccess
+ls -l api.php
+ls -l index.php
 ls -l lib/utils.php
-ls -l public/assets/js/app.js
+ls -l assets/js/app.js
 ls -l sql/schema.sql
 ```
 
@@ -139,15 +139,15 @@ Open browser DevTools (F12 → Network):
 **Solution**: Check `.env` file credentials and verify MySQL service is running
 
 ### Issue: Permission denied on file upload
-**Solution**: Ensure web server has write access to `public/uploads/` directory
+**Solution**: Ensure web server has write access to `uploads/` directory
 ```bash
-chmod 755 public/uploads
-chown www-data:www-data public/uploads  # or appropriate user
+chmod 755 uploads
+chown www-data:www-data uploads  # or appropriate user
 ```
 
 ### Issue: 404 errors on API endpoints
 **Solutions**:
-1. Verify .htaccess file is uploaded to `public/` directory
+1. Verify .htaccess file is uploaded to project root
 2. Check that mod_rewrite is enabled
 3. Verify AllowOverride is set to All in Apache config
 

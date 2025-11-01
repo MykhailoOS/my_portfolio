@@ -88,7 +88,7 @@ class PortfolioExporter {
     
     private function copyMedia() {
         foreach ($this->media as $item) {
-            $sourcePath = __DIR__ . '/../public/' . $item['file_path'];
+            $sourcePath = __DIR__ . '/../' . $item['file_path'];
             
             if (file_exists($sourcePath)) {
                 $destPath = $this->exportPath . '/assets/img/' . basename($item['file_path']);

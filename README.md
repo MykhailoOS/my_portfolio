@@ -6,7 +6,11 @@ A modern, **mobile-first** portfolio builder with multilingual support and ZIP e
 ![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 
-> **📢 v1.1.0 Update**: Simplified architecture by removing unnecessary CORS headers and test files. The app uses same-origin requests and doesn't need CORS. See [FIXES_APPLIED.md](FIXES_APPLIED.md) for details.
+> **📢 v1.1.0 Update**: 
+> - ✅ Simplified architecture (removed unnecessary CORS headers)
+> - ✅ Reorganized file structure (`index.php` now in root for easier deployment)
+> - ✅ Pre-configured for InfinityFree hosting
+> - 📖 See [DEPLOYMENT_READY.md](DEPLOYMENT_READY.md) for deployment guide
 
 ## ✨ Features
 
@@ -82,38 +86,36 @@ http://localhost/
 ## 📁 Project Structure
 
 ```
-portfolio-builder/
-├── public/              # Web root
-│   ├── index.php       # Main builder UI
-│   ├── api.php         # REST API endpoints
-│   ├── .htaccess       # Apache configuration
-│   ├── assets/
-│   │   ├── css/
-│   │   │   └── style.css
-│   │   ├── js/
-│   │   │   ├── app.js
-│   │   │   └── vendor/
-│   │   │       └── sortable.min.js
-│   │   └── img/
-│   └── uploads/        # User-uploaded media
-├── lib/                # PHP libraries
-│   ├── db.php         # Database functions
-│   ├── utils.php      # Utility functions
-│   ├── export.php     # ZIP export logic
-│   └── config.php     # Configuration loader
-├── i18n/              # UI translations
+portfolio-builder/     # Web root
+├── index.php         # Main builder UI
+├── api.php           # REST API endpoints
+├── .htaccess         # Apache configuration
+├── .env              # Environment config (not in git)
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── app.js
+│   │   └── vendor/
+│   │       └── sortable.min.js
+│   └── img/
+├── uploads/          # User-uploaded media
+├── lib/              # PHP libraries
+│   ├── db.php       # Database functions
+│   ├── utils.php    # Utility functions
+│   ├── export.php   # ZIP export logic
+│   └── config.php   # Configuration loader
+├── i18n/            # UI translations
 │   ├── ui.en.json
 │   ├── ui.uk.json
 │   ├── ui.ru.json
 │   └── ui.pl.json
 ├── sql/
-│   └── schema.sql     # Database schema
-├── .env.example       # Environment template
-├── .gitignore
-├── setup.sh           # Setup script
-├── README.md          # This file
-├── QUICKSTART.md      # Quick start guide
-└── README_SETUP.md    # Detailed documentation
+│   └── schema.sql   # Database schema
+└── docs/            # Documentation
+    ├── README.md
+    ├── QUICKSTART.md
+    └── ARCHITECTURE.md
 ```
 
 ## 🎨 Usage
@@ -278,7 +280,7 @@ All POST requests require CSRF token.
 ### Common Issues
 
 - **Database connection errors**: Check `.env` credentials and MySQL service status
-- **Permission problems**: Ensure web server has write access to `public/uploads/`
+- **Permission problems**: Ensure web server has write access to `uploads/` directory
 - **Upload failures**: Check PHP `upload_max_filesize` and `post_max_size` settings
 - **Export errors**: Verify PHP ZIP extension is installed and `memory_limit` is sufficient
 - **404 errors**: Ensure `.htaccess` is uploaded and mod_rewrite is enabled

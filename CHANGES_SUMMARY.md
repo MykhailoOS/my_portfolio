@@ -2,7 +2,11 @@
 
 ## Overview
 
-This release simplifies the Portfolio Builder architecture by removing unnecessary CORS (Cross-Origin Resource Sharing) complexity and consolidating documentation.
+This release simplifies the Portfolio Builder architecture by:
+1. Removing unnecessary CORS (Cross-Origin Resource Sharing) complexity
+2. Consolidating documentation
+3. Reorganizing file structure for easier deployment (index.php now in root)
+4. Pre-configuring InfinityFree database connection
 
 ## Key Changes
 
@@ -40,6 +44,8 @@ This release simplifies the Portfolio Builder architecture by removing unnecessa
 - `ARCHITECTURE.md` - Comprehensive architecture documentation
 - `FIXES_APPLIED.md` - Detailed explanation of v1.1.0 changes
 - `CHANGES_SUMMARY.md` - This file
+- `INFINITYFREE_SETUP.md` - InfinityFree deployment guide
+- `.env` - Database configuration (not in git)
 
 **Files Updated**:
 - `README.md` - Updated troubleshooting section, added v1.1.0 notice
@@ -52,6 +58,32 @@ This release simplifies the Portfolio Builder architecture by removing unnecessa
 - Removed CORS headers (not needed)
 - Removed complex ErrorDocument directive
 - Kept essential: rewrite rules, security headers, PHP settings, caching
+
+### 5. Reorganized File Structure
+
+**Before**: Files in `public/` subdirectory  
+**After**: Files in project root
+
+**Changes**:
+- Moved `public/index.php` → `index.php`
+- Moved `public/api.php` → `api.php`
+- Moved `public/.htaccess` → `.htaccess`
+- Moved `public/assets/` → `assets/`
+- Moved `public/uploads/` → `uploads/`
+- Updated all file paths in PHP code
+- Updated documentation
+
+**Reason**: InfinityFree and most free hosting providers expect files in root directory, not subdirectory
+
+### 6. Database Configuration
+
+**Created**: `.env` file with InfinityFree database credentials
+- Host: `sql308.infinityfree.com`
+- Database: `if0_39948852_portfolio_maker`
+- User: `if0_39948852`
+- Port: 3306
+
+**Created**: `INFINITYFREE_SETUP.md` with step-by-step deployment instructions
 
 ## Before vs After
 

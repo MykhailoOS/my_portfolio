@@ -15,19 +15,19 @@ Portfolio Builder is a mobile-first web application for creating multilingual po
 ## Project Structure
 
 ```
-portfolio-builder/
-├── public/              # Web root (DocumentRoot)
-│   ├── index.php       # Main builder UI
-│   ├── api.php         # REST API endpoints
-│   ├── .htaccess       # Apache rewrite rules
-│   ├── assets/
-│   │   ├── css/style.css
-│   │   ├── js/
-│   │   │   ├── app.js          # Main application logic
-│   │   │   └── vendor/
-│   │   │       └── sortable.min.js
-│   │   └── img/
-│   └── uploads/        # User-uploaded media
+portfolio-builder/       # Web root (DocumentRoot)
+├── index.php           # Main builder UI
+├── api.php             # REST API endpoints
+├── .htaccess           # Apache rewrite rules
+├── .env                # Environment variables (not in git)
+├── assets/
+│   ├── css/style.css
+│   ├── js/
+│   │   ├── app.js          # Main application logic
+│   │   └── vendor/
+│   │       └── sortable.min.js
+│   └── img/
+├── uploads/            # User-uploaded media
 ├── lib/                # Backend libraries
 │   ├── config.php     # Environment configuration
 │   ├── db.php         # Database functions
@@ -38,9 +38,8 @@ portfolio-builder/
 │   ├── ui.uk.json
 │   ├── ui.ru.json
 │   └── ui.pl.json
-├── sql/
-│   └── schema.sql     # Database schema
-└── .env               # Environment variables
+└── sql/
+    └── schema.sql     # Database schema
 ```
 
 ## Architecture Principles
@@ -218,10 +217,10 @@ portfolio.zip
 - ~10 MB disk space
 
 ### Configuration
-1. Set DocumentRoot to `public/` directory
+1. Set DocumentRoot to project root directory
 2. Configure `.env` with database credentials
 3. Import `sql/schema.sql`
-4. Set permissions on `public/uploads/` (755)
+4. Set permissions on `uploads/` (755)
 
 ### Web Server Setup
 
@@ -284,8 +283,8 @@ sudo systemctl restart apache2
 
 **Solution**:
 ```bash
-chmod 755 public/uploads
-chown www-data:www-data public/uploads
+chmod 755 uploads
+chown www-data:www-data uploads
 ```
 
 ## Security Considerations

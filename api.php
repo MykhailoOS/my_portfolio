@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../lib/db.php';
-require_once __DIR__ . '/../lib/utils.php';
-require_once __DIR__ . '/../lib/export.php';
+require_once __DIR__ . '/lib/db.php';
+require_once __DIR__ . '/lib/utils.php';
+require_once __DIR__ . '/lib/export.php';
 
 header('Content-Type: application/json');
 

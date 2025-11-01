@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../lib/utils.php';
+require_once __DIR__ . '/lib/utils.php';
 
 $csrfToken = generateCsrf();
 $editorLang = $_COOKIE['editorLang'] ?? 'en';
