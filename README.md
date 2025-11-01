@@ -2,9 +2,11 @@
 
 A modern, **mobile-first** portfolio builder with multilingual support and ZIP export functionality. Create beautiful portfolio websites with a drag-and-drop interface that works seamlessly on phones, tablets, and desktops.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
+
+> **📢 v1.1.0 Update**: Simplified architecture by removing unnecessary CORS headers and test files. The app uses same-origin requests and doesn't need CORS. See [FIXES_APPLIED.md](FIXES_APPLIED.md) for details.
 
 ## ✨ Features
 
@@ -273,24 +275,16 @@ All POST requests require CSRF token.
 
 ## 🐛 Troubleshooting
 
-### CORS Issues (InfinityFree & Similar Hosts)
+### Common Issues
 
-If you see errors like "CORS header 'Access-Control-Allow-Origin' missing":
+- **Database connection errors**: Check `.env` credentials and MySQL service status
+- **Permission problems**: Ensure web server has write access to `public/uploads/`
+- **Upload failures**: Check PHP `upload_max_filesize` and `post_max_size` settings
+- **Export errors**: Verify PHP ZIP extension is installed and `memory_limit` is sufficient
+- **404 errors**: Ensure `.htaccess` is uploaded and mod_rewrite is enabled
+- **Mobile layout issues**: Clear browser cache and check viewport meta tag
 
-1. **Check CORS Test**: Visit `/test-cors.html` on your site to verify CORS headers
-2. **Read CORS Guide**: See [CORS_FIX.md](CORS_FIX.md) for detailed solutions
-3. **Verify .htaccess**: Ensure `public/.htaccess` is uploaded and processed
-
-This project includes comprehensive CORS support for free hosting providers.
-
-### Other Issues
-
-See [README_SETUP.md](README_SETUP.md#troubleshooting) for:
-- Database connection issues
-- Permission problems
-- Upload failures
-- Export errors
-- Mobile layout problems
+See [README_SETUP.md](README_SETUP.md#troubleshooting) for detailed solutions.
 
 ## 📊 Performance
 
@@ -341,10 +335,11 @@ Proprietary - All rights reserved.
 
 ## 📞 Support
 
-- **Documentation**: See [README_SETUP.md](README_SETUP.md)
-- **Quick Start**: See [QUICKSTART.md](QUICKSTART.md)
-- **Issues**: Check browser console and PHP error logs
-- **Questions**: Review code comments in source files
+- **Quick Start**: See [QUICKSTART.md](QUICKSTART.md) for 5-minute setup
+- **Architecture**: See [ARCHITECTURE.md](ARCHITECTURE.md) for technical details
+- **Testing**: See [TEST_CHECKLIST.md](TEST_CHECKLIST.md) for verification
+- **Detailed Setup**: See [README_SETUP.md](README_SETUP.md) for comprehensive guide
+- **Recent Fixes**: See [FIXES_APPLIED.md](FIXES_APPLIED.md) for v1.1.0 changes
 
 ## 🗺️ Roadmap
 
@@ -368,8 +363,8 @@ Proprietary - All rights reserved.
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: 2024  
+**Version**: 1.1.0  
+**Last Updated**: November 2024  
 **Built with**: ❤️ and ☕
 
 **Get started**: Run `./setup.sh` and open in your browser!

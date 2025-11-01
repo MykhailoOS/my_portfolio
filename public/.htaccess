@@ -18,12 +18,6 @@
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
     Header set X-XSS-Protection "1; mode=block"
-    
-    # CORS headers
-    Header set Access-Control-Allow-Origin "*"
-    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-    Header set Access-Control-Allow-Headers "Content-Type, X-CSRF-Token, Authorization"
-    Header set Access-Control-Max-Age "3600"
 </IfModule>
 
 # PHP settings
@@ -43,6 +37,3 @@
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
 </IfModule>
-
-# Custom error pages with CORS headers
-ErrorDocument 404 "<!DOCTYPE html><html><head><meta charset='UTF-8'><script>if(window.location.pathname.includes('api')){document.write('{\"error\":\"Not found\"}');}</script></head><body><h1>404 Not Found</h1></body></html>"
