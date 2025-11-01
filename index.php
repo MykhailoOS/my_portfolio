@@ -87,6 +87,6 @@ $editorLang = $_COOKIE['editorLang'] ?? 'en';
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
             crossorigin="anonymous"></script>
     <script src="/assets/js/vendor/sortable.min.js"></script>
-    <script src="/assets/js/app.js"></script>
+    <script type="module" src="/assets/js/app.js"></script>
 </body>
 </html>
