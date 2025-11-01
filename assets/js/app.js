@@ -14,10 +14,9 @@
     autoSaveTimer: null,
 
     init: function() {
-      this.loadI18n();
       this.bindEvents();
       this.initModals();
-      this.checkExistingProject();
+      this.loadI18n();
     },
 
     loadI18n: function() {
@@ -33,6 +32,7 @@
         success: (data) => {
           this.i18n = data;
           this.renderUI();
+          this.checkExistingProject();
         },
         error: () => {
           $.ajax({
@@ -44,11 +44,13 @@
             success: (data) => {
               this.i18n = data;
               this.renderUI();
+              this.checkExistingProject();
             },
             error: (xhr, status, error) => {
               console.error('Failed to load i18n files:', status, error);
               this.i18n = {};
               this.renderUI();
+              this.checkExistingProject();
             }
           });
         }
