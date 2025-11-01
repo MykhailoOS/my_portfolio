@@ -30,8 +30,8 @@ http://localhost/
 **Option 1: Quick Setup (existing server)**
 
 ```bash
-# Copy to your web root
-cp -r public/* /var/www/html/portfolio/
+# Copy entire project to your web root
+cp -r * /var/www/html/portfolio/
 
 # Access
 http://localhost/portfolio/
@@ -47,9 +47,9 @@ Add:
 ```apache
 <VirtualHost *:80>
     ServerName portfolio.local
-    DocumentRoot /path/to/portfolio-builder/public
+    DocumentRoot /path/to/portfolio-builder
     
-    <Directory /path/to/portfolio-builder/public>
+    <Directory /path/to/portfolio-builder>
         AllowOverride All
         Require all granted
     </Directory>
@@ -74,7 +74,7 @@ Add to `/etc/hosts`:
 server {
     listen 80;
     server_name portfolio.local;
-    root /path/to/portfolio-builder/public;
+    root /path/to/portfolio-builder;
     index index.php;
     
     location / {
@@ -169,8 +169,8 @@ DB_PASS=your_password
 ### "Permission denied" on uploads
 
 ```bash
-chmod 755 public/uploads
-chown www-data:www-data public/uploads
+chmod 755 uploads
+chown www-data:www-data uploads
 ```
 
 ### Blocks not draggable

@@ -2,12 +2,6 @@
 
 function jsonResponse($data, $status = 200) {
     http_response_code($status);
-    
-    // Ensure CORS headers are set for all responses
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, X-CSRF-Token, Authorization');
-    
     header('Content-Type: application/json');
     echo json_encode($data);
     exit;

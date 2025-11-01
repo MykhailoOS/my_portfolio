@@ -1,10 +1,5 @@
 <?php
-require_once __DIR__ . '/../lib/utils.php';
-
-// Set CORS headers
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, X-CSRF-Token, Authorization');
+require_once __DIR__ . '/lib/utils.php';
 
 $csrfToken = generateCsrf();
 $editorLang = $_COOKIE['editorLang'] ?? 'en';

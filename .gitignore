@@ -3,8 +3,8 @@
 .env.local
 
 # Uploads
-public/uploads/*
-!public/uploads/.gitkeep
+uploads/*
+!uploads/.gitkeep
 
 # Logs
 *.log
